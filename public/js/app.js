@@ -15,7 +15,6 @@ fetch('/restaurantes').then(response => {
       layer.bindPopup(feature.properties.nombre, { closeButton: false });
     }
   }).addTo(map);
-
 });
 
 var barrios = L.geoJSON(data, {
@@ -44,8 +43,23 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
 this.map.zoomControl.setPosition('bottomright')
 
 
+L.Routing.control({
+    waypoints: [
+      L.latLng(1.567373254106369, -75.3289818763733),
+      L.latLng(1.577009484361147, -75.32109618186952)
+    ],
+    router: new L.Routing.OSRMv1({
+      serviceUrl: 'http://localhost:5000/route/v1',
+      language: 'es-ES',
+  })
+}).addTo(map);
+
 var overlayMaps = {
   "Barrios": barrios
 };
+
+map.on('click', function(e) {
+  alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+});
 
 L.control.layers(null, overlayMaps, {position:'topleft'}).addTo(map);
