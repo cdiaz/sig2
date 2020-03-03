@@ -17,5 +17,11 @@ export class AppController {
     let restaurantes = await this.appService.getRestaurantes();
     return restaurantes
   }
+  
+  @Get('/hoteles')
+  async getHoteles(){
+    let hoteles = await this.appService.getHoteles();
+    return hoteles
+  }
 
 }

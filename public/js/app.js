@@ -7,7 +7,7 @@ fetch('/restaurantes').then(response => {
   L.geoJSON(r, {
     pointToLayer: (feature, latlng) => {
       return L.marker(latlng, {
-        icon: L.icon({ iconUrl:'http://localhost:3000/img/restaurant.png', iconSize: [ 56, 56 ] }),
+        icon: L.icon({ iconUrl:'http://localhost:3000/img/restaurant.png', iconSize: [ 36, 36 ] }),
         title: feature.properties.nombre
       })
     },
@@ -17,6 +17,28 @@ fetch('/restaurantes').then(response => {
   }).addTo(map);
 
 });
+
+
+fetch('/hoteles').then(response => {
+  return response.json();
+}).then(r => {
+  
+  L.geoJSON(r, {
+    pointToLayer: (feature, latlng) => {
+      return L.marker(latlng, {
+        icon: L.icon({ iconUrl:'http://localhost:3000/img/hoteles.png', iconSize: [ 46, 46 ] }),
+        title: feature.properties.nombre
+      })
+    },
+    onEachFeature: function (feature, layer) {
+      layer.bindPopup(feature.properties.nombre, { closeButton: false });
+    }
+  }).addTo(map);
+
+});
+
+
+
 
 var barrios = L.geoJSON(data, {
   style: () => {
