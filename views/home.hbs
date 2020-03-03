@@ -16,8 +16,14 @@
     </div>    
   </div>
     <script>
-      var decode =  decodeURIComponent("{{{barrios}}}");
-      var data = JSON.parse(decode); 
+      var rawBarrios =  decodeURIComponent("{{{barrios}}}");
+      var barrios = JSON.parse(rawBarrios); 
+
+      var rawRestaurantes =  decodeURIComponent("{{{restaurantes}}}");
+      var restaurantes = JSON.parse(rawRestaurantes); 
+
+      var rawHoteles =  decodeURIComponent("{{{hoteles}}}");
+      var hoteles = JSON.parse(rawHoteles); 
     </script>
 
     <script src="./js/app.js"></script>

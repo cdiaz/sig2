@@ -1,23 +1,31 @@
-//var geoJsonLayer = L.geoJson().addTo(map);
 
-fetch('/restaurantes').then(response => {
-  return response.json();
-}).then(r => {
-  
-  L.geoJSON(r, {
-    pointToLayer: (feature, latlng) => {
-      return L.marker(latlng, {
-        icon: L.icon({ iconUrl:'http://localhost:3000/img/restaurant.png', iconSize: [ 56, 56 ] }),
-        title: feature.properties.nombre
-      })
-    },
-    onEachFeature: function (feature, layer) {
-      layer.bindPopup(feature.properties.nombre, { closeButton: false });
-    }
-  }).addTo(map);
-});
+var Lrestaurantes = L.geoJSON(restaurantes, {
+  pointToLayer: (feature, latlng) => {
+    return L.marker(latlng, {
+      icon: L.icon({ iconUrl:'http://localhost:3000/img/restaurant.png', iconSize: [ 36, 36 ] }),
+      title: feature.properties.nombre
+    })
+  },
+  onEachFeature: function (feature, layer) {
+    layer.bindPopup(feature.properties.nombre, { closeButton: false });
+  }
+})
 
-var barrios = L.geoJSON(data, {
+
+var Lhoteles = L.geoJSON(hoteles, {
+  pointToLayer: (feature, latlng) => {
+    return L.marker(latlng, {
+      icon: L.icon({ iconUrl:'http://localhost:3000/img/hoteles.png', iconSize: [ 46, 46 ] }),
+      title: feature.properties.nombre
+    })
+  },
+  onEachFeature: function (feature, layer) {
+    layer.bindPopup(feature.properties.nombre, { closeButton: false });
+  }
+})
+
+
+var barrios = L.geoJSON(barrios, {
   style: () => {
     return {
       color: "green",
@@ -32,7 +40,7 @@ var barrios = L.geoJSON(data, {
 
 
 var map = L.map('mapid', {
-  layers: [barrios]
+  layers: [barrios, Lrestaurantes, Lhoteles]
 }).setView([1.5694, -75.3258], 16);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
@@ -55,11 +63,13 @@ L.Routing.control({
 }).addTo(map);
 
 var overlayMaps = {
-  "Barrios": barrios
+  "Barrios": barrios,
+  "Restaurantes": Lrestaurantes,
+  "Hoteles": Lhoteles
 };
 
-map.on('click', function(e) {
+/* map.on('click', function(e) {
   alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-});
+}); */
 
 L.control.layers(null, overlayMaps, {position:'topleft'}).addTo(map);
