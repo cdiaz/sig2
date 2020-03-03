@@ -9,8 +9,13 @@ export class AppController {
   @Render('home')
   async home(){
     let barrios = await this.appService.getBarrios();
-    
     return { barrios: encodeURIComponent(JSON.stringify(barrios)) }
+  }
+
+  @Get('/restaurantes')
+  async getRestaurantes(){
+    let restaurantes = await this.appService.getRestaurantes();
+    return restaurantes
   }
 
 }

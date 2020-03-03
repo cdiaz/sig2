@@ -6,7 +6,8 @@ export class AppService {
   constructor(@Inject('dbconnection') private readonly db) {}
 
   async getBarrios() {
-    const query = await this.db.query(
+
+    let barrios = await this.db.query(
     "SELECT\n" +
     "	row_to_json ( fc ) \n" +
     "FROM\n" +
@@ -29,6 +30,22 @@ export class AppService {
     "		) AS f \n" +
     "	) AS fc;"
     );
-    return await query.rows[0].row_to_json;
+
+    return await barrios.rows[0].row_to_json
   }
+
+
+  public async getRestaurantes(){
+    let result = await this.db.query("SELECT ST_AsGeoJSON(geom), nombre FROM restaurantes");
+
+    const restaurantes = result.rows.map((row) => {
+      let geojson = JSON.parse(row.st_asgeojson)
+      geojson.properties = { nombre: row.nombre }
+      return geojson
+    });
+
+    return await restaurantes;
+  }
+
+
 }

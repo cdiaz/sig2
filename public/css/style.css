@@ -1,4 +1,43 @@
 #mapid {
   height: 100%;
   width: 100%;
+  z-index: 1;
+  position: relative;
  }
+
+.leaflet-container .leaflet-control-zoom-in, .leaflet-container .leaflet-control-zoom-out {
+  background: #333;
+  color: #faebd7;
+  border: none;
+}
+
+#sidecontent
+{
+  margin:0;
+  padding:15px 0 0 0;
+  float:right;
+  width:100%;
+  position: absolute;
+  text-align: center;
+  left: 0px;
+  background-color: #ffffff;
+  opacity: 0.7;
+  z-index: 999
+}
+
+
+.leaflet-control-container {
+  display: block;
+  }
+  .leaflet-control-zoom {
+  left: 5px;
+  top: 50px;
+  }
+  .leaflet-control-layers {
+  left: 5px;
+  top: 50px;
+  }
+  
+  .leaflet-touch .leaflet-control-attribution {
+  display: none;
+  }
