@@ -38,38 +38,51 @@ var barrios = L.geoJSON(barrios, {
   }
 })
 
-
 var map = L.map('mapid', {
   layers: [barrios, Lrestaurantes, Lhoteles]
 }).setView([1.5694, -75.3258], 16);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
-  foo: 'bar', 
-  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-}).addTo(map);
-
 this.map.zoomControl.setPosition('bottomright')
 
+var _tileLayer = L.tileLayer('http://localhost:8080/styles/osm-bright/{z}/{x}/{y}.png');
+
+var _tileLayerOSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}', {
+  foo: 'bar', 
+  attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+}).addTo(map)
+
+var _googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+});
 
 L.Routing.control({
-    waypoints: [
-      L.latLng(1.567373254106369, -75.3289818763733),
-      L.latLng(1.577009484361147, -75.32109618186952)
-    ],
-    router: new L.Routing.OSRMv1({
-      serviceUrl: 'http://localhost:5000/route/v1',
-      language: 'es-ES',
+  waypoints: [
+    L.latLng(1.567373254106369, -75.3289818763733),
+    L.latLng(1.577009484361147, -75.32109618186952)
+  ],
+  router: new L.Routing.OSRMv1({
+    serviceUrl: 'http://localhost:5000/route/v1',
+    language: 'es-ES',
   })
 }).addTo(map);
 
-var overlayMaps = {
+var CapasTematicas = {
   "Barrios": barrios,
   "Restaurantes": Lrestaurantes,
   "Hoteles": Lhoteles
 };
 
+
+var CapasBase = {
+  "Tilelayer OSM": _tileLayerOSM,
+  "Tilelayer Local": _tileLayer,
+  "Satelite": _googleSat
+};
+
+
 /* map.on('click', function(e) {
   alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
 }); */
 
-L.control.layers(null, overlayMaps, {position:'topleft'}).addTo(map);
+L.control.layers(CapasBase, CapasTematicas, {position:'topleft'}).addTo(map);
